@@ -17,9 +17,13 @@ class Wa:
     path_driver = "drivers\\chromedriver.exe"
     delay_wa_load = 20
     browser = None
+    verbose = False  # debug mode
     
-    def __init__(self):
-        print("Construct")
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+
+        if self.verbose:
+            print("WA2: Construct")
         self.browser = webdriver.Chrome(self.path_driver)
 
     def is_ready(self, xpath):
@@ -60,6 +64,8 @@ class Wa:
 
     def type_msg(self, text):
         # menuliskan pesan ke box pesan
+        if self.verbose:
+            print("WA2: Type Message")
         act = ActionChains(self.browser)
         msg = self.browser.find_element_by_xpath(self.path_msg)
         act.click(msg)
@@ -68,12 +74,16 @@ class Wa:
 
     def click_send(self):
         # klik tombol kirim pesan
+        if self.verbose:
+            print("WA2: Send")
         act = ActionChains(self.browser)
         btn = self.browser.find_element_by_xpath(self.path_send)
         act.click(btn)
         act.perform()
 
     def send_message_to(self,number,text):
+        if self.verbose:
+            print("WA2: send_message_to",number,":", text)
         try:            
             self.open(number)
             time.sleep(20)
