@@ -18,6 +18,7 @@ class Wa:
     path_invalid_msg = '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[1]'
     path_users = '//*[@id="pane-side"]/div[1]/div/div/div[xx]/div/div/div[2]/div[1]/div[1]/span' # counter user diganti dengan 'xx'
     path_driver = "drivers\\chromedriver.exe"
+    url_xpath = 'https://raw.githubusercontent.com/pujangga123/wa2/main/xpath.json' #default xpath url
     delay_wa_load = 20 
     browser = None
     verbose = False  # debug mode
@@ -34,7 +35,7 @@ class Wa:
                 self.path_send = vars['path_send']
                 self.path_search = vars['path_search']
                 self.path_msg = vars['path_msg']
-                self.path_invalid_msg = vars['path_msg']
+                self.path_invalid_msg = vars['path_invalid_msg']
                 self.path_users = vars['path_users']
         except:
             print("ERROR: fail to load 'xpath.json'")
@@ -56,6 +57,18 @@ class Wa:
         # check if xpath is ready
         try:
             self.browser.find_element_by_xpath(xpath)    
+            return True
+        except:
+            return False
+    
+    def download_xpath_definition(self, url=""):
+        import requests
+
+        try:            
+            if url == "":
+                url = self.url_xpath
+            r = requests.get(url, allow_redirects=True)
+            open('xpath.json', 'w').write(r.content)
             return True
         except:
             return False
@@ -173,7 +186,7 @@ class Wa:
             self.type_msg(text)
             time.sleep(3)
             self.click_send()
-            time.sleep(1)
+            time.sleep(2)
             #self.browser.close()
             return True
         except:
