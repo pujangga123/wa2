@@ -84,7 +84,7 @@ class Wa:
 
         # tunggu sampai WA siap (dan proses link selesai)
         while not self.is_ready(self.path_search):
-            time.sleep(3)
+            time.sleep(7)
             self.debug("Waiting WA session")
     
     def new_tab(self):
@@ -165,6 +165,13 @@ class Wa:
         else:
             return False
 
+    def get_element(self,xpath):
+        try:
+            el = self.browser.find_element_by_xpath(xpath)
+            return el
+        except:
+            return False
+
     def send_message_to(self,number,text):
         # mengirimkan pesan berdasarkan nomor telepon        
         #   fungsi akan mengembalikan nilai True jika nomor valid, False jika nomor tidak valids
@@ -173,22 +180,37 @@ class Wa:
             self.open(number)
 
             # jika ada pesan 'invalid path', maka nomor tidak valid
-            if self.is_ready(self.path_invalid_msg):
-                im = self.browser.find_element_by_xpath(self.path_invalid_msg)
-                if im.text != '':
-                    self.debug(f"{number} not valid")
-                    return False
+            n = 1            
+
             
-            # tunggu sampai kotak msg siap
-            while not self.is_ready(self.path_msg):
+            # tunggu sampai kotak msg siap, tunggu sampai 2x10 detik
+            n = 1
+            while not self.is_ready(self.path_msg) and n<=10:
                 self.debug("waiting ...")
                 time.sleep(2)
+                im = self.get_element(self.path_invalid_msg) # kalau msg belum siap, check box msg
+                if im!=False: # kalau msg ditemukan tampilkan error message
+                    if im.text != '' :
+                        self.debug("error message '"+im.text+"'")                        
+                    else:
+                        self.debug("timout (a)")                
+                    return False # break message
+                n +=1
+
+            if n>10: # kalau waktu tunggu > 2x10 detik, return timeout   
+                self.debug("timeout")
+                return False
+
+            # sampai sini, berarti siap kirim
             self.type_msg(text)
             time.sleep(3)
             self.click_send()
             time.sleep(2)
             #self.browser.close()
             return True
-        except:
+        except Exception as e:
+            print(e,">>",e.__traceback__.tb_lineno) 
+            self.debug(e) 
+            exit()
             return False
 

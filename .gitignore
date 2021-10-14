@@ -1,5 +1,8 @@
 /venv
 /drivers/*
+/.vscode
 !/drivers/README.md
 /__pycache__
+/Python37-32
 coba.py
+workspace.code-workspace
