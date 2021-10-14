@@ -39,8 +39,8 @@ class SendMessages(Thread):
                 log("Force Stop")
                 return 
         log("======= Pengiriman selesai =======")
-        log(" Terkirim =", berhasil)
-        log(" Gagal =",gagal)
+        log(" Terkirim = "+str(berhasil))
+        log(" Gagal = "+str(gagal))
         log("==================================")
 
 def log(text):
