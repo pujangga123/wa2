@@ -18,12 +18,11 @@ class Wa:
     path_invalid_msg = '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[1]'
     path_users = '//*[@id="pane-side"]/div[1]/div/div/div[xx]/div/div/div[2]/div[1]/div[1]/span' # counter user diganti dengan 'xx'
     path_driver = "drivers\\chromedriver.exe"
-    url_xpath = 'https://raw.githubusercontent.com/pujangga123/wa2/main/xpath.json' #default xpath url
     delay_wa_load = 20 
     browser = None
     verbose = False  # debug mode
     
-    def __init__(self, verbose=False, headless=False, logging = False):
+    def __init__(self, verbose=False, headless=False, logging = False, path_driver = ""):
         self.verbose = verbose
 
         if self.verbose:
@@ -37,6 +36,7 @@ class Wa:
                 self.path_msg = vars['path_msg']
                 self.path_invalid_msg = vars['path_invalid_msg']
                 self.path_users = vars['path_users']
+                self.path_driver = path_driver if path_driver!=""  else "drivers\\chromedriver.exe"
         except:
             print("ERROR: fail to load 'xpath.json'")
             exit()
@@ -59,19 +59,8 @@ class Wa:
             self.browser.find_element_by_xpath(xpath)    
             return True
         except:
-            return False
+            return False    
     
-    def download_xpath_definition(self, url=""):
-        import requests
-
-        try:            
-            if url == "":
-                url = self.url_xpath
-            r = requests.get(url, allow_redirects=True)
-            open('xpath.json', 'w').write(r.content)
-            return True
-        except:
-            return False
 
     def open(self, number=""):
         # open WA
@@ -211,6 +200,17 @@ class Wa:
         except Exception as e:
             print(e,">>",e.__traceback__.tb_lineno) 
             self.debug(e) 
-            exit()
             return False
 
+def download_xpath_definition(self, url=""):
+    import requests
+
+    try:            
+        if url == "":
+            url = 'https://raw.githubusercontent.com/pujangga123/wa2/main/xpath.json' # default path
+        r = requests.get(url, allow_redirects=True)
+        open('xpath.json', 'wb').write(r.content)
+        print(r.content)
+        return True
+    except Exception as e:
+        return False

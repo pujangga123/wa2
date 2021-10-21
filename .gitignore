@@ -4,6 +4,15 @@
 !/drivers/README.md
 /__pycache__
 /Python37-32
+/7zip
+/compiled
+/installer
+*.bat
 coba.py
+compile.py
+*.pyc
 workspace.code-workspace
 launch.json
+jg_*
+*.7z
+listfile.txt
