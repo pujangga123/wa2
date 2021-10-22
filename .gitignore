@@ -7,6 +7,7 @@
 /7zip
 /compiled
 /installer
+/arsip
 *.bat
 coba.py
 compile.py
@@ -16,3 +17,4 @@ launch.json
 jg_*
 *.7z
 listfile.txt
+.gitignore
