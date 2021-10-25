@@ -133,7 +133,6 @@ class Wa:
         act = ActionChains(self.browser)
         msg = self.browser.find_element_by_xpath(self.path_msg)
         act.click(msg)
-        act.send_keys(text)        
         for line in text.split('\n'):  # simulate SHIFT+ENTER pesan yang mengandung ENTER
             act.send_keys(line)
             act.key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER)
