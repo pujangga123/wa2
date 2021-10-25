@@ -119,7 +119,6 @@ def parse_text(tmp_text, datas):
         else:
             tmp_text = tmp_text.replace("{V"+str(n)+"}",v)
         n += 1
-    tmp_text = tmp_text.replace("\n","")
     return tmp_text
 
 def insert_num():
