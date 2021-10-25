@@ -7,6 +7,15 @@ import random, csv, time
 
 force_stop = False
 
+# waktu acak (dalam detik), jeda antar pengiriman
+jeda1_min = 10
+jeda1_max = 30
+
+# waktu acak (dalam detik), jeda panjang setelah sejumlah pengiriman (jeda2_count)
+jeda2_count = 20
+jeda2_min = 120
+jeda2_max = 300
+
 class SendMessages(Thread):    
     """
         thread yang bertugas mengirimkan pesan berdasarkan data dan template yang sudah ditentukan.
@@ -39,7 +48,8 @@ class SendMessages(Thread):
                     arow = row.split("\t")
                     if len(arow)<1:
                         raise ValueError()
-                    number = arow[0]      
+
+                    number = arow[0] # nomor selalu pada kolom pertama
                     
                     # cek number jika bukan +62
                     if(number[0]=="0"):
@@ -62,13 +72,14 @@ class SendMessages(Thread):
                     log("invalid data on row "+str(n))
 
             #antar pengiriman jeda 10 - 30 detik
-            delay_rdm = random.randint(10, 30)
-            time.sleep(delay_rdm)
+            if jeda2_max>0:
+                delay_rdm = random.randint(jeda1_min, jeda2_max)
+                time.sleep(delay_rdm)
 
             #pengiriman 20 pesan jeda 2 - 5 menit
             x += 1
-            if x >= 20:
-                delay_rdm2 = random.randint(120, 300)
+            if x >= jeda2_count:
+                delay_rdm2 = random.randint(jeda2_min, jeda2_max)
                 log("===== Tunggu "+str(delay_rdm2)+" detik ======")
                 time.sleep(delay_rdm2)
                 x = 0

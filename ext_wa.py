@@ -12,6 +12,7 @@ https://www.geeksforgeeks.org/action-chains-in-selenium-python/
 """
 
 class Wa:
+    # original xpath on 2021-10-10
     path_send = '//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button'
     path_search = '//*[@id="side"]/div[1]/div/label/div/div[2]'
     path_msg = '//*[@id="main"]/footer/div[1]/div/div/div[2]/div[1]/div/div[2]'
@@ -133,6 +134,9 @@ class Wa:
         msg = self.browser.find_element_by_xpath(self.path_msg)
         act.click(msg)
         act.send_keys(text)        
+        for line in text.split('\n'):  # simulate SHIFT+ENTER pesan yang mengandung ENTER
+            act.send_keys(line)
+            act.key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER)
         act.perform()
 
     def click_send(self):
