@@ -63,11 +63,6 @@ class SendMessages(Thread):
                     else:
                         log("❌ cannot send to "+number)
                         gagal += 1
-                        #jika gagal tulis ke csv
-                        f = open('error.csv', 'a+', newline='')
-                        writer = csv.writer(f, delimiter=';')
-                        writer.writerow(arow)
-                        f.close()                    
                 except Exception as e:
                     log("invalid data on row "+str(n))
 
