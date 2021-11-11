@@ -1,8 +1,10 @@
 {
-    "path_send" : "//*[@id=\"main\"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button",                    
-    "path_search" : "//*[@id=\"side\"]/div[1]/div/label/div/div[2]",
-    "path_msg" : "//*[@id=\"main\"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[2]",
-    "path_invalid_msg" : "//*[@id=\"app\"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[1]",
-    "path_users" : "//*[@id=\"pane-side\"]/div[1]/div/div/div[xx]/div/div/div[2]/div[1]/div[1]/span",    
-    "url_xpath" : "https://raw.githubusercontent.com/pujangga123/wa2/main/xpath.json"
+    "path_send"         : "//*[@id=\"main\"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button",                    
+    "path_send_att"     : "//*[@id=\"app\"]/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/div/div[2]/div[2]/div/div",
+    "path_msg"          : "//*[@id=\"main\"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[2]",
+    "path_msg_att"      : "//*[@id=\"app\"]/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/div/div[1]/div[3]/div/div/div[2]/div[1]/div[2]",
+    "path_search"       : "//*[@id=\"side\"]/div[1]/div/label/div/div[2]",
+    "path_invalid_msg"  : "//*[@id=\"app\"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[1]",
+    "path_users"        : "//*[@id=\"pane-side\"]/div[1]/div/div/div[xx]/div/div/div[2]/div[1]/div[1]/span",    
+    "url_xpath"         : "https://raw.githubusercontent.com/pujangga123/wa2/main/xpath.json"
 }

@@ -16,6 +16,8 @@ class Wa:
     path_send = '//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button'
     path_search = '//*[@id="side"]/div[1]/div/label/div/div[2]'
     path_msg = '//*[@id="main"]/footer/div[1]/div/div/div[2]/div[1]/div/div[2]'
+    path_send_att = "//*[@id=\"app\"]/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/div/div[2]/div[2]/div/div"
+    path_msg_att = "//*[@id=\"app\"]/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/div/div[1]/div[3]/div/div/div[2]/div[1]/div[2]"
     path_invalid_msg = '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[1]'
     path_users = '//*[@id="pane-side"]/div[1]/div/div/div[xx]/div/div/div[2]/div[1]/div[1]/span' # counter user diganti dengan 'xx'
     path_driver = "drivers\\chromedriver.exe"
@@ -135,7 +137,12 @@ class Wa:
         act.click(msg)
         for line in text.split('\n'):  # simulate SHIFT+ENTER pesan yang mengandung ENTER
             act.send_keys(line)
-            act.key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER)
+            act.key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER)                    
+        act.perform()
+
+    def perform_paste(self):
+        act = ActionChains(self.browser)
+        act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL)
         act.perform()
 
     def click_send(self):
@@ -152,7 +159,7 @@ class Wa:
         if self.search_user(name, wait_time):
             self.type_msg(text)
             time.sleep(3)
-            self.click_send()
+            #self.click_send()
             return True
         else:
             return False
@@ -164,7 +171,7 @@ class Wa:
         except:
             return False
 
-    def send_message_to(self,number,text):
+    def send_message_to(self,number,text, att_file=""):
         # mengirimkan pesan berdasarkan nomor telepon        
         #   fungsi akan mengembalikan nilai True jika nomor valid, False jika nomor tidak valids
         self.debug(f"send_message_to {number} : {text}")
@@ -195,7 +202,10 @@ class Wa:
 
             # sampai sini, berarti siap kirim
             self.type_msg(text)
-            time.sleep(3)
+            time.sleep(5)
+            if att_file!="":
+                load_to_clipboard("images\\"+att_file)
+                self.perform_paste()
             self.click_send()
             time.sleep(2)
             #self.browser.close()
@@ -217,3 +227,21 @@ def download_xpath_definition(self, url=""):
         return True
     except Exception as e:
         return False
+
+def load_to_clipboard(filename):
+
+    from io import BytesIO
+    import win32clipboard
+    from PIL import Image
+
+    image = Image.open(filename)
+
+    output = BytesIO()
+    image.convert("RGB").save(output, "BMP")
+    data = output.getvalue()[14:]
+    output.close()
+
+    win32clipboard.OpenClipboard()
+    win32clipboard.EmptyClipboard()
+    win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)
+    win32clipboard.CloseClipboard()

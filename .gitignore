@@ -8,6 +8,7 @@
 /compiled
 /installer
 /arsip
+/images
 *.bat
 coba.py
 compile.py
@@ -18,3 +19,4 @@ jg_*
 *.7z
 listfile.txt
 .gitignore
+*.csv
