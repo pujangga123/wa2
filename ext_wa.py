@@ -145,11 +145,14 @@ class Wa:
         act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL)
         act.perform()
 
-    def click_send(self):
+    def click_send(self,att=False):
         # klik tombol kirim pesan
         self.debug("Send")
         act = ActionChains(self.browser)
-        btn = self.browser.find_element_by_xpath(self.path_send)
+        if att:
+            btn = self.browser.find_element_by_xpath(self.path_send_att)
+        else:
+            btn = self.browser.find_element_by_xpath(self.path_send)
         act.click(btn)
         act.perform()
 
@@ -186,14 +189,15 @@ class Wa:
             n = 1
             while not self.is_ready(self.path_msg) and n<=10:
                 self.debug("waiting ...")
-                time.sleep(2)
-                im = self.get_element(self.path_invalid_msg) # kalau msg belum siap, check box msg
-                if im!=False: # kalau msg ditemukan tampilkan error message
+                try:
+                    im = self.browser.find_element_by_xpath(self.xpath)
                     if im.text != '' :
                         self.debug("error message '"+im.text+"'")                        
                     else:
                         self.debug("timout (a)")                
-                    return False # break message
+                except:
+                    self.debug("invalid_msg not ready")
+                time.sleep(2)
                 n +=1
 
             if n>10: # kalau waktu tunggu > 2x10 detik, return timeout   
@@ -206,6 +210,7 @@ class Wa:
             if att_file!="":
                 load_to_clipboard("images\\"+att_file)
                 self.perform_paste()
+                time.sleep(5)
             self.click_send()
             time.sleep(2)
             #self.browser.close()
