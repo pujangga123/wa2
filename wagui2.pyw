@@ -3,7 +3,7 @@ from tkinter import messagebox
 from ext_wa import Wa, download_xpath_definition
 from threading import Thread
 import os, fnmatch
-import random, csv, time
+import random, csv, time, datetime
 
 force_stop = False
 
@@ -33,7 +33,10 @@ class SendMessages(Thread):
         log("Prep session & linking device...")
 
         drivers = optVariable.get()
-        wa = Wa(path_driver="drivers\\"+drivers)
+        att_file = var_image.get()
+        if att_file[0] == "*":
+            att_file = ""
+        wa = Wa(verbose=True, logging = True,path_driver="drivers\\"+drivers)
         wa.open()
         berhasil = 0
         gagal = 0
@@ -48,7 +51,6 @@ class SendMessages(Thread):
                     arow = row.split("\t")
                     if len(arow)<1:
                         raise ValueError()
-
                     number = arow[0] # nomor selalu pada kolom pertama
                     
                     # cek number jika bukan +62
@@ -57,7 +59,9 @@ class SendMessages(Thread):
               
                     msg = parse_text(tmp_text, arow)
                     log(str(n)+"# sending to "+number+": "+msg)
-                    if wa.send_message_to(number,msg):
+                    ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    arow.insert(0, ct)
+                    if wa.send_message_to(number,msg,att_file):
                         log("✔ message sent to "+number )
                         berhasil += 1
                     else:
@@ -68,7 +72,8 @@ class SendMessages(Thread):
 
             #antar pengiriman jeda 10 - 30 detik
             if jeda2_max>0:
-                delay_rdm = random.randint(jeda1_min, jeda2_max)
+                delay_rdm = random.randint(20, 60)
+                log("tunggu "+str(delay_rdm)+" secs")
                 time.sleep(delay_rdm)
 
             #pengiriman 20 pesan jeda 2 - 5 menit
@@ -209,6 +214,13 @@ target.pack()
 Label(f1,text="2. Buat template").pack(fill=X,anchor=W)
 template = Text(f1, height=4)
 template.pack()
+imglist = fnmatch.filter(os.listdir('images'), '*.jpg')
+imglist.insert(0,"* TANPA GAMBAR *")
+var_image = StringVar(win)
+var_image.set("* TANPA GAMBAR *") # default value
+opt_image = OptionMenu(f1, var_image,*imglist)
+opt_image.pack()
+
 f3 = Frame(f1) # panel tombol untuk insert vars
 f3.pack(fill=X)
 insert_tno = Button(f3, text="Nomor", command=insert_num)
