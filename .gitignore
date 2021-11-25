@@ -15,7 +15,6 @@ compile.py
 *.pyc
 workspace.code-workspace
 launch.json
-jg_*
 *.7z
 listfile.txt
 .gitignore
