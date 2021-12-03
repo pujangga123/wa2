@@ -196,7 +196,7 @@ def update_xpath():
 ####################################################
 
 win = Tk()
-win.title("WA2 GUI (JG) v211125.1")
+win.title("WA2 GUI (JG) v211203.1")
 win.iconbitmap("wa2.ico")
 win.geometry("500x700")
 f1 = Frame(win)
@@ -207,11 +207,11 @@ f1.place(relx=0.05,rely=0.05,relwidth=0.9,relheight=0.9)
     kolom pertama harus nomor telepon, diawali "62"
 """
 Label(f1, text="1. Data: antar data dipisah oleh TAB. Kolom pertama harus No WA").pack(fill=X,anchor=W)
-target = Text(f1, height=15) 
+target = Text(f1, height=6) 
 target.pack()
 
 Label(f1,text="2. Buat template").pack(fill=X,anchor=W)
-template = Text(f1, height=4)
+template = Text(f1, height=15)
 template.pack()
 imglist = fnmatch.filter(os.listdir('images'), '*.jpg') + fnmatch.filter(os.listdir('images'), '*.jpeg')
 imglist.insert(0,"* TANPA GAMBAR *")
