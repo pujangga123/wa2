@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 from ext_wa import Wa, download_xpath_definition
 from threading import Thread
 import os, fnmatch
@@ -191,12 +191,41 @@ def update_xpath():
     download_xpath_definition("https://insite3.jgmmotor.co.id/remote/wa2/xpath.json")
     messagebox.showinfo("","Done")
 
+def open_folder():
+    os.system("explorer D:\WA2\images")
+
+def attach_file():
+    from tkinter import filedialog as fd
+    import shutil
+
+    filetypes = (
+        ('jpg', '*.jpg'),
+        ('jpeg', '*.jpeg'),
+        ('All files', '*.*')
+    )
+    filename = fd.askopenfilename(
+        title='Attach Image',
+        initialdir='D:\\WA2\\images',
+        filetypes=filetypes)
+
+    f = os.path.basename(filename)
+    d = os.path.dirname(filename)
+
+    print(filename)
+    if filename!="":
+        shutil.copyfile(filename, "D:\\WA2\\images\\"+f)
+        imglist = fnmatch.filter(os.listdir('images'), '*.jpg') + fnmatch.filter(os.listdir('images'), '*.jpeg')
+        imglist.insert(0,"* TANPA GAMBAR *")
+        opt_image['values'] = imglist
+
+    
+
 ####################################################
 # inisialisasi mulai
 ####################################################
 
 win = Tk()
-win.title("WA2 GUI (JG) v211203.1")
+win.title("WA2 GUI (JG) v211224.1")
 win.iconbitmap("wa2.ico")
 win.geometry("500x700")
 f1 = Frame(win)
@@ -213,12 +242,20 @@ target.pack()
 Label(f1,text="2. Buat template").pack(fill=X,anchor=W)
 template = Text(f1, height=15)
 template.pack()
+f4 = Frame(f1)
+f4.pack(fill=X)
+attach = Button(f4, text="Attach", command=attach_file)
+attach.pack(side=RIGHT)
 imglist = fnmatch.filter(os.listdir('images'), '*.jpg') + fnmatch.filter(os.listdir('images'), '*.jpeg')
 imglist.insert(0,"* TANPA GAMBAR *")
 var_image = StringVar(win)
 var_image.set("* TANPA GAMBAR *") # default value
-opt_image = OptionMenu(f1, var_image,*imglist)
-opt_image.pack()
+opt_image = ttk.Combobox(f4, textvariable=var_image)
+opt_image['values'] = imglist
+opt_image.pack(side=RIGHT)
+btn_openfolder = Button(f4, text="Open Folder", command=open_folder)
+btn_openfolder.pack(side=RIGHT)
+
 
 f3 = Frame(f1) # panel tombol untuk insert vars
 f3.pack(fill=X)
