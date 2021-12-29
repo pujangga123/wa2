@@ -19,3 +19,4 @@ launch.json
 listfile.txt
 .gitignore
 *.csv
+*.lnk

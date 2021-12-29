@@ -6,6 +6,7 @@ import os, fnmatch
 import random, csv, time, datetime
 
 force_stop = False
+sm = None  # send message thread
 
 class SendMessages(Thread):    
     """
@@ -168,7 +169,9 @@ def stop_click():
         fungsi untuk stop proses
         masih belum berfungsi dengan baik, perlu diperbaiki.
     """
-    force_stop = True
+    #force_stop = True
+    sm.stop()
+    sm.join()
 
 def show_xpath():
     try:
