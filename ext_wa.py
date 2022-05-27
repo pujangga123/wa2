@@ -14,7 +14,7 @@ https://www.geeksforgeeks.org/action-chains-in-selenium-python/
 class Wa:
     # original xpath on 2021-10-10
     path_send = '//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button'
-    path_search = '//*[@id="side"]/div[1]/div/label/div/div[2]'
+    path_search =  '//*[@id="side"]/div[1]/div/label/div/div[2]'
     path_msg = '//*[@id="main"]/footer/div[1]/div/div/div[2]/div[1]/div/div[2]'
     path_send_att = "//*[@id=\"app\"]/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/div/div[2]/div[2]/div/div"
     path_msg_att = "//*[@id=\"app\"]/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/div/div[1]/div[3]/div/div/div[2]/div[1]/div[2]"
@@ -47,7 +47,10 @@ class Wa:
         options = Options()
         if logging == False:
             options.add_experimental_option("excludeSwitches", ["enable-logging"])     
-        self.browser = webdriver.Chrome(self.path_driver,chrome_options=options)
+        try:
+            self.browser = webdriver.Chrome(self.path_driver,chrome_options=options)
+        except Exception as e:
+            self.debug("Chromedriver tidak cocok")            
         
 
     def debug(self, msg):
@@ -63,12 +66,17 @@ class Wa:
             return True
         except:
             return False    
-    
+
+    def open_test(self, url):
+        self.browser.get(url)
+        print("Browser OK")
+
 
     def open(self, number=""):
         # open WA
         # jika number diisi maka akan langsung buka nomor bersangkutan
         # jika number tidak diisi, maka cuma akan buka WA (biasanya untuk keperluan link device)
+        #self.browser.get('https://chromedriver.storage.googleapis.com/index.html?path=102.0.5005.61/')
         if number == "":
             self.browser.get("https://web.whatsapp.com")
         else:
@@ -77,7 +85,7 @@ class Wa:
         # tunggu sampai WA siap (dan proses link selesai)
         while not self.is_ready(self.path_search):
             time.sleep(7)
-            self.debug("Waiting WA session")
+            self.debug("Waiting WA session")            
     
     def new_tab(self):
         # open new tab

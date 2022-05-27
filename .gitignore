@@ -20,3 +20,5 @@ listfile.txt
 .gitignore
 *.csv
 *.lnk
+try2.py
+get-pip.py

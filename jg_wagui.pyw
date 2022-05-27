@@ -29,6 +29,9 @@ class SendMessages(Thread):
         if att_file[0] == "*":
             att_file = ""
         wa = Wa(verbose=True, logging = True,path_driver="drivers\\"+drivers)
+        if wa is None:
+            log("Chrome driver: incompatible")
+            return
         wa.open()
         berhasil = 0
         gagal = 0
@@ -228,7 +231,7 @@ def attach_file():
 ####################################################
 
 win = Tk()
-win.title("WA2 GUI (JG) v211224.1")
+win.title("WA2 GUI (JG) v220527.1")
 win.iconbitmap("wa2.ico")
 win.geometry("500x700")
 f1 = Frame(win)
