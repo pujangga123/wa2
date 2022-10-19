@@ -1,4 +1,5 @@
 /venv
+/venv - Copy
 /drivers/*
 /.vscode
 !/drivers/README.md
@@ -22,3 +23,5 @@ listfile.txt
 *.lnk
 try2.py
 get-pip.py
+test*
+wget.exe

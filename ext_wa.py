@@ -14,10 +14,10 @@ https://www.geeksforgeeks.org/action-chains-in-selenium-python/
 class Wa:
     # original xpath on 2021-10-10
     path_send = '//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button'
-    path_search =  '//*[@id="side"]/div[1]/div/label/div/div[2]'
+    path_search =  '//*[@id="side"]/div[1]/div/div/div[2]/div/div[2]'
     path_msg = '//*[@id="main"]/footer/div[1]/div/div/div[2]/div[1]/div/div[2]'
     path_send_att = "//*[@id=\"app\"]/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/div/div[2]/div[2]/div/div"
-    path_msg_att = "//*[@id=\"app\"]/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/div/div[1]/div[3]/div/div/div[2]/div[1]/div[2]"
+    path_msg_att = "no use",
     path_invalid_msg = '//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[1]'
     path_users = '//*[@id="pane-side"]/div[1]/div/div/div[xx]/div/div/div[2]/div[1]/div[1]/span' # counter user diganti dengan 'xx'
     path_driver = "drivers\\chromedriver.exe"
@@ -62,7 +62,7 @@ class Wa:
     def is_ready(self, xpath):
         # check if xpath is ready
         try:
-            self.browser.find_element_by_xpath(xpath)    
+            self.browser.find_element('xpath',xpath)    
             return True
         except:
             return False    
@@ -101,7 +101,7 @@ class Wa:
         result = []
         while n<=b:
             try:
-                obj = self.browser.find_element_by_xpath(self.path_users.replace("xx",n))
+                obj = self.browser.find_element('xpath',self.path_users.replace("xx",n))
                 result.push(obj.text)
             except:
                 pass
@@ -118,7 +118,7 @@ class Wa:
         self.debug(f"Search '{name}'")
         act = ActionChains(self.browser)
         # search
-        sb = self.browser.find_element_by_xpath(self.path_search) # SearchBox
+        sb = self.browser.find_element('xpath',self.path_search) # SearchBox
         act.click(sb)               # focus search box
         act.send_keys(Keys.ESCAPE)  # clear search box
         act.click(sb)               # bring back focus to search box
@@ -141,7 +141,7 @@ class Wa:
         # menuliskan pesan ke box pesan
         self.debug( "Typing Message")
         act = ActionChains(self.browser)
-        msg = self.browser.find_element_by_xpath(self.path_msg)
+        msg = self.browser.find_element('xpath',self.path_msg)
         act.click(msg)
         for line in text.split('\n'):  # simulate SHIFT+ENTER pesan yang mengandung ENTER
             act.send_keys(line)
@@ -149,18 +149,22 @@ class Wa:
         act.perform()
 
     def perform_paste(self):
-        act = ActionChains(self.browser)
-        act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL)
-        act.perform()
+        #act = ActionChains(self.browser)
+        #act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL)
+        #act.perform()
+        # sejak selenium 4, tidak lagi menggunakan actionchains
+        msg = self.browser.find_element('xpath',self.path_msg)
+        msg.send_keys(Keys.CONTROL+"v")
+
 
     def click_send(self,att=False):
         # klik tombol kirim pesan
         self.debug("Send")
         act = ActionChains(self.browser)
         if att:
-            btn = self.browser.find_element_by_xpath(self.path_send_att)
+            btn = self.browser.find_element('xpath',self.path_send_att)
         else:
-            btn = self.browser.find_element_by_xpath(self.path_send)
+            btn = self.browser.find_element('xpath',self.path_send)
         act.click(btn)
         act.perform()
 
@@ -177,7 +181,7 @@ class Wa:
 
     def get_element(self,xpath):
         try:
-            el = self.browser.find_element_by_xpath(xpath)
+            el = self.browser.find_element('xpath',xpath)
             return el
         except:
             return False
@@ -198,7 +202,7 @@ class Wa:
             while not self.is_ready(self.path_msg) and n<=10:
                 self.debug("waiting ...")
                 try:
-                    im = self.browser.find_element_by_xpath(self.xpath)
+                    im = self.browser.find_element('xpath',self.xpath)
                     if im.text != '' :
                         self.debug("error message '"+im.text+"'")                        
                     else:
@@ -214,9 +218,11 @@ class Wa:
 
             # sampai sini, berarti siap kirim
             self.type_msg(text)
-            time.sleep(5)
+            time.sleep(2)
             if att_file!="":
                 load_to_clipboard("images\\"+att_file)
+                print("loaded")
+                time.sleep(10)
                 self.perform_paste()
                 time.sleep(5)
             self.click_send()
