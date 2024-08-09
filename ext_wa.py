@@ -80,6 +80,7 @@ class Wa:
         if number == "":
             self.browser.get("https://web.whatsapp.com")
         else:
+            print("https://web.whatsapp.com/send?phone="+ number + "&app_absent=1")
             self.browser.get("https://web.whatsapp.com/send?phone="+ number + "&app_absent=1")
 
         # tunggu sampai WA siap (dan proses link selesai)
@@ -197,9 +198,9 @@ class Wa:
             n = 1            
 
             
-            # tunggu sampai kotak msg siap, tunggu sampai 2x10 detik
+            # tunggu sampai kotak msg siap, tunggu sampai 2x30 detik
             n = 1
-            while not self.is_ready(self.path_msg) and n<=10:
+            while not self.is_ready(self.path_msg) and n<=30:
                 self.debug("waiting ...")
                 try:
                     im = self.browser.find_element('xpath',self.xpath)
@@ -212,7 +213,7 @@ class Wa:
                 time.sleep(2)
                 n +=1
 
-            if n>10: # kalau waktu tunggu > 2x10 detik, return timeout   
+            if n>30: # kalau waktu tunggu > 2x10 detik, return timeout   
                 self.debug("timeout")
                 return False
 

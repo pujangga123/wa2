@@ -10,6 +10,7 @@
 /installer
 /arsip
 /images
+/drivers_arsip
 *.bat
 coba.py
 compile.py

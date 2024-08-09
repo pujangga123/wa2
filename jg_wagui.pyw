@@ -231,9 +231,9 @@ def attach_file():
 ####################################################
 
 win = Tk()
-win.title("WA2 GUI (JG) v220527.1")
+win.title("WA2 GUI (JG) v240131.1")
 win.iconbitmap("wa2.ico")
-win.geometry("500x700")
+win.geometry("500x550")
 f1 = Frame(win)
 f1.place(relx=0.05,rely=0.05,relwidth=0.9,relheight=0.9)
 
@@ -246,7 +246,7 @@ target = Text(f1, height=6)
 target.pack()
 
 Label(f1,text="2. Buat template").pack(fill=X,anchor=W)
-template = Text(f1, height=15)
+template = Text(f1, height=8)
 template.pack()
 f4 = Frame(f1)
 f4.pack(fill=X)
